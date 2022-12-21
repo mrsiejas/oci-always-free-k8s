@@ -1,4 +1,5 @@
 module "compartment" {
+  count        = var.compartment_creation_enabled ? 1 : 0
   source       = "./compartment"
   tenancy_ocid = var.tenancy_ocid
   compartment = {
@@ -9,7 +10,7 @@ module "compartment" {
 
 module "network" {
   source                   = "./network"
-  compartment_id           = module.compartment.id
+  compartment_id           = var.compartment_creation_enabled ? module.compartment[0].id : var.compartment_id
   region                   = var.region
   vcn_dns_label            = "vcn"
   public_subnet_dns_label  = "public"
@@ -18,16 +19,14 @@ module "network" {
 
 module "compute" {
   source              = "./compute"
-  compartment_id      = module.compartment.id
+  compartment_id      = var.compartment_creation_enabled ? module.compartment[0].id : var.compartment_id
   ssh_key_pub_path    = var.ssh_key_pub_path
   load_balancer_id    = module.network.load_balancer_id
   availability_domain = 0
 
   leader = {
-    shape = "VM.Standard.A1.Flex"
-    image = "Canonical-Ubuntu-20.04-aarch64-2021.12.01-0"
-    # shape = "VM.Standard.E2.1.Micro"
-    # image = "Canonical-Ubuntu-20.04-2021.12.01-0"
+    shape            = "VM.Standard.A1.Flex" # ARM-based processor
+    image            = "Canonical-Ubuntu-20.04-aarch64-2022.10.31-0"
     ocpus            = 1
     memory_in_gbs    = 3
     hostname         = "leader"
@@ -35,11 +34,9 @@ module "compute" {
     assign_public_ip = true
   }
   workers = {
-    count = 3
-    shape = "VM.Standard.A1.Flex"
-    image = "Canonical-Ubuntu-20.04-aarch64-2021.12.01-0"
-    # shape = "VM.Standard.E2.1.Micro"
-    # image = "Canonical-Ubuntu-20.04-2021.12.01-0"
+    count            = 3
+    shape            = "VM.Standard.A1.Flex" # ARM-based processor 
+    image            = "Canonical-Ubuntu-20.04-aarch64-2022.10.31-0"
     ocpus            = 1
     memory_in_gbs    = 7
     base_hostname    = "worker"
@@ -70,16 +67,4 @@ module "k8s_scaffold" {
   leader                         = module.compute.leader
   workers                        = module.compute.workers
   debug_create_cluster_admin     = var.debug_create_cluster_admin
-}
-
-output "cluster_public_ip" {
-  value = module.network.reserved_public_ip.ip_address
-}
-
-output "cluster_public_address" {
-  value = var.cluster_public_dns_name
-}
-
-output "admin_token" {
-  value = module.k8s_scaffold.admin_token
 }

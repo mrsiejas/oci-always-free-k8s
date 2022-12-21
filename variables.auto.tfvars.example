@@ -5,6 +5,9 @@ tenancy_ocid     = "ocid1.tenancy.oc1..."
 region           = "uk-london-1"
 private_key_path = "C:\\Users\\...\\.oci\\oci-tf.pem"
 
+compartment_creation_enabled = false
+compartment_id               = "ocid1.compartment.oc1..."
+
 # SSH keys - used to access generated instances
 ssh_key_path     = "C:\\Users\\...\\.ssh\\id_ed25519"
 ssh_key_pub_path = "C:\\Users\\...\\.ssh\\id_ed25519.pub"

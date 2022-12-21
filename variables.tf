@@ -1,4 +1,9 @@
 variable "tenancy_ocid" { type = string }
+variable "compartment_id" { type = string }
+variable "compartment_creation_enabled" {
+  type    = bool
+  default = false
+}
 variable "region" { type = string }
 variable "user_ocid" { type = string }
 variable "fingerprint" { type = string }
