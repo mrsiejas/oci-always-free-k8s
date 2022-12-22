@@ -30,8 +30,4 @@ resource "oci_core_instance" "worker" {
   metadata = {
     ssh_authorized_keys = file(var.ssh_key_pub_path)
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }

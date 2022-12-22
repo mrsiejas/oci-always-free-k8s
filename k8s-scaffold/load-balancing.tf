@@ -9,9 +9,6 @@ resource "oci_network_load_balancer_backend_set" "workers_http" {
     protocol = "TCP"
     port     = 22
   }
-  lifecycle {
-    ignore_changes = [backends]
-  }
 }
 
 resource "oci_network_load_balancer_backend" "worker_http" {
@@ -41,9 +38,6 @@ resource "oci_network_load_balancer_backend_set" "workers_https" {
   health_checker {
     protocol = "TCP"
     port     = 22
-  }
-  lifecycle {
-    ignore_changes = [backends]
   }
 }
 

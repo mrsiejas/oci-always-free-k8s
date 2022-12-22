@@ -3,8 +3,8 @@ module "compartment" {
   source       = "./compartment"
   tenancy_ocid = var.tenancy_ocid
   compartment = {
-    name        = "terraformed"
-    description = "Compartment for Terraform'ed resources"
+    name        = "Terraform"
+    description = "Compartment managed by Terraform"
   }
 }
 
@@ -35,7 +35,7 @@ module "compute" {
   }
   workers = {
     count            = 3
-    shape            = "VM.Standard.A1.Flex" # ARM-based processor 
+    shape            = "VM.Standard.A1.Flex" # ARM-based processor
     image            = "Canonical-Ubuntu-20.04-aarch64-2022.10.31-0"
     ocpus            = 1
     memory_in_gbs    = 7

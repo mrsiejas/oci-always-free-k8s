@@ -7,7 +7,4 @@ resource "oci_network_load_balancer_network_load_balancer" "load_balancer" {
   reserved_ips {
     id = oci_core_public_ip.reserved.id
   }
-  lifecycle {
-    ignore_changes = [time_updated]
-  }
 }
