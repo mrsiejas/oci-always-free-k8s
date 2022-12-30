@@ -6,6 +6,6 @@ output "cluster_public_address" {
   value = var.cluster_public_dns_name
 }
 
-output "admin_token" {
-  value = module.k8s_scaffold.admin_token
-}
+# output "admin_token" {
+#   value = module.k8s_skaffold.admin_token
+# }

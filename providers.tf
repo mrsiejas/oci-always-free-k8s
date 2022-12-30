@@ -7,6 +7,10 @@ terraform {
     null = {
       version = "3.1.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.8.0"
+    }
   }
 }
 
@@ -17,4 +21,10 @@ provider "oci" {
   private_key_path     = var.private_key_path
   private_key_password = var.private_key_password
   region               = var.region
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
 }

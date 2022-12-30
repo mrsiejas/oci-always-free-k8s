@@ -56,8 +56,8 @@ module "k8s" {
   windows_overwrite_local_kube_config = var.windows_overwrite_local_kube_config
 }
 
-module "k8s_scaffold" {
-  source                         = "./k8s-scaffold"
+module "k8s_skaffold" {
+  source                         = "./k8s-skaffold"
   depends_on                     = [module.k8s]
   ssh_key_path                   = var.ssh_key_path
   cluster_public_ip              = module.network.reserved_public_ip.ip_address

@@ -1,0 +1,33 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-argocd
+  namespace: argocd
+  annotations:
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # I am terminating SSL on CDN
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/dashboard)$ $1/ redirect;
+spec:
+  ingressClassName: nginx
+# ${cluster_public_dns_name != null ? <<EOT
+#   tls:
+#     - hosts:
+#         - ${cluster_public_dns_name}
+#       secretName: dashboard-tls
+# EOT
+# : "  # tls config omitted, cause no dns name provided"}
+  rules:
+    - # ${cluster_public_dns_name != null ? "host: ${cluster_public_dns_name}" : "# host name omitted, cause no dns name provided"}
+      http:
+        paths:
+          - path: /prawdaobjawiona(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
